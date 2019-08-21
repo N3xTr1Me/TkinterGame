@@ -16,22 +16,27 @@ def k_prsd(event):
         reDraw(pl, step, 0)
     endGame()
 
+def add_enemies():
+    for i in range(6):
+        enemy = Enemy()
+        enemy.draw()
+        enemies_s.append(enemy)
+
 def reDraw(obj, x, y):
     canvas.move(obj, x, y)
 
 def endGame():
-    print('player:', player.x, player.y)
-    print('exit_g:', exit_g.x, exit_g.y)
     if player.comparePoz(exit_g):
         print('GG')
         print('U won!!!')
 
-class Player():
+class Player:
 
     def __init__(this, clr):
         this.x = this.randomPoz(N_X)
         this.y = this.randomPoz(N_Y)
         this.color = clr
+        this.draw()
 
     def draw(this):
         body = canvas.create_oval((this.x, this.y),
@@ -42,20 +47,31 @@ class Player():
     def randomPoz(this, top):
         return rn.randint(1, top - 1)*step
 
+class Exit(Player):
+    def __init__(this):
+        super().__init__('#FFD700')
+
+class Enemy(Player):
+    def __init__(this):
+        super().__init__('#32CD32')
+
+class Hero(Player):
+    def __init__(this):
+        super().__init__('red')
+        
     def comparePoz(this, other):
         return this.x == other.x and this.y == other.y
-
 
 master = tk.Tk()
 step = 60
 N_X = 10
 N_Y = 10
+enemies_s = []
 canvas = tk.Canvas(master, bg = '#00FFFF', height = step*N_X, width = step*N_Y)
 
-player = Player('#32CD32')
-pl = (player.draw())
-exit_g = Player('#FFD700')
-exit_g.draw()
+exit_g = Exit()
+add_enemies()
+player = Hero()
 
 canvas.pack()
 master.bind('<KeyPress>', k_prsd)

@@ -4,16 +4,16 @@ import random as rn
 def k_prsd(event):
     if event.keysym == 'Up' or event.keysym == 'w':
         player.y -= step
-        reDraw(pl, 0, -(step))
+        reDraw(player.body, 0, -(step))
     if event.keysym == 'Down' or event.keysym == 's':
         player.y += step
-        reDraw(pl, 0, step)
+        reDraw(player.body, 0, step)
     if event.keysym == 'Left' or event.keysym == 'a':
         player.x -= step
-        reDraw(pl, -(step), 0)
+        reDraw(player.body, -(step), 0)
     if event.keysym == 'Right' or event.keysym == 'd':
         player.x += step
-        reDraw(pl, step, 0)
+        reDraw(player.body, step, 0)
     endGame()
 
 def add_enemies():
@@ -39,10 +39,9 @@ class Player:
         this.draw()
 
     def draw(this):
-        body = canvas.create_oval((this.x, this.y),
+        this.body = canvas.create_oval((this.x, this.y),
                                   (this.x+step, this.y+step),
                                    fill = this.color)
-        return body
         
     def randomPoz(this, top):
         return rn.randint(1, top - 1)*step
@@ -53,11 +52,11 @@ class Exit(Player):
 
 class Enemy(Player):
     def __init__(this):
-        super().__init__('#32CD32')
+        super().__init__('red')
 
 class Hero(Player):
     def __init__(this):
-        super().__init__('red')
+        super().__init__('#32CD32')
         
     def comparePoz(this, other):
         return this.x == other.x and this.y == other.y
